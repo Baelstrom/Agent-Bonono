@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>PopUp Tester</title>
+
+    <script>
+
+    // Checker function
+    // Got it from stackoverflow
+    // Changed it to reflect ES6
+
+    var popupBlockerChecker = {
+            check: (popup_window) => {
+                    var _scope = this;
+                    if (popup_window) {
+                        if(/chrome/.test(navigator.userAgent.toLowerCase())){
+                            setTimeout( () => {
+                                _scope._is_popup_blocked(_scope, popup_window);
+                             },200);
+                        }else{
+                            popup_window.onload = () => {
+                                _scope._is_popup_blocked(_scope, popup_window);
+                            };
+                        }
+                    }else{
+                        _scope._displayError();
+                    }
+            },
+            _is_popup_blocked: (scope, popup_window) => {
+                if ((popup_window.innerHeight > 0)==false){ scope._displayError(); }
+            },
+            // The text below is the alert that is displayed if popup blocking is enabled
+            _displayError: () => {
+                alert("Welcome to ServisHero! Please make sure that you disable any Pop-up Blockers to proceed with the payment process!");
+            }
+            };
+
+        // This bit of code is the actual pop up that the page tries to run
+        var popup = window.open("https://www.servishero.com", '_self');
+        popupBlockerChecker.check(popup);
+    </script>
+  </head>
+  <body>
+
+
+  </body>
+</html>
